@@ -13,24 +13,40 @@ setwd("/Users/m/Google Drive/school/Data mining/KalyppoChallenge")
 
 kalyppo <- read.csv('#KalyppoChallenge-Facebook.csv', header=TRUE)
 #get column with data
-text = kalyppo$Title
+#text = kalyppo$Title
 
 # prepare to say we are in Accra for time zone purposes
 Sys.setenv(TZ="GMT")
 
 #remove non-ASCII characters
-dat2 <- grep("text", iconv(text, "latin1", "ASCII", sub="text"))
-dat3 <- text[-dat2]
+#dat2 <- grep("text", iconv(text, "latin1", "ASCII", sub="text"))
+#dat3 <- text[-dat2]
 
 #create a corpus
-kalyppoCorpus <- Corpus(VectorSource(dat3))
+kalyppoCorpus <- Corpus(VectorSource(kalyppo$Title))
 
 #function to remove specified characters
 replace = content_transformer(function(x, pattern)
   gsub(pattern, "", x))
-kalyppoCorpus = tm_map(kalyppoCorpus, replace, "#")
+#remove non-ASCII characters
+kalyppoCorpus = tm_map(kalyppoCorpus, replace, "ðŸ˜")
 
-kalyppoCorpus <- tm_map(kalyppoCorpus, removeWords, c('the', 'this', stopwords('english')))
+kalyppoCorpus = tm_map(kalyppoCorpus, replace, "â˜")
+kalyppoCorpus = tm_map(kalyppoCorpus, replace, "â€“")
+kalyppoCorpus = tm_map(kalyppoCorpus, replace, "‚‚‚")
+kalyppoCorpus = tm_map(kalyppoCorpus, replace, "‚‚‚‚")
+kalyppoCorpus = tm_map(kalyppoCorpus, replace, "âˆš")
+kalyppoCorpus = tm_map(kalyppoCorpus, replace, "âœ”ðÿ’")
+kalyppoCorpus = tm_map(kalyppoCorpus, replace, "‚‚‚‚‚‚‚")
+kalyppoCorpus = tm_map(kalyppoCorpus, replace, "‚‚‚‚‚‚")
+kalyppoCorpus = tm_map(kalyppoCorpus, replace, "ðÿ")
+kalyppoCorpus = tm_map(kalyppoCorpus, replace, "â€™")
+kalyppoCorpus = tm_map(kalyppoCorpus, replace, "â€â€ž")
+kalyppoCorpus = tm_map(kalyppoCorpus, replace, "ðÿ‘")
+
+
+
+#kalyppoCorpus <- tm_map(kalyppoCorpus, removeWords, c('the', 'this', stopwords('english')))
 #
 # create the TDM
 KalyppoChallenge.tdm <- TermDocumentMatrix(kalyppoCorpus, control = list(
@@ -41,10 +57,10 @@ KalyppoChallenge.tdm <- TermDocumentMatrix(kalyppoCorpus, control = list(
    removeNumbers = TRUE,
    bounds = list(global = c(1, Inf))))
 #
-# preview the top ten terms across the Manifestos
+# preview the top ten terms across the facebook posts
 inspect(KalyppoChallenge.tdm[1:10,])
 #
-# find the top ten most frequent words across the Manifestos
+# find the top ten most frequent words across the facebook posts
 findFreqTerms(KalyppoChallenge.tdm, lowfreq=100, highfreq=Inf)
 #
 # load wordcloud package to draw wordcloud
