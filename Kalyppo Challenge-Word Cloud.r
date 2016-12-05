@@ -46,12 +46,12 @@ kalyppoCorpus = tm_map(kalyppoCorpus, replace, "ðÿ‘")
 
 
 
-#kalyppoCorpus <- tm_map(kalyppoCorpus, removeWords, c('the', 'this', stopwords('english')))
+kalyppoCorpus <- tm_map(kalyppoCorpus, removeWords, c('the', 'this', stopwords('english')))
 #
 # create the TDM
 KalyppoChallenge.tdm <- TermDocumentMatrix(kalyppoCorpus, control = list(
    removePunctuation = TRUE,
-   stopwords = TRUE,
+   stopwords = FALSE,
    tolower = TRUE,
    stemming = FALSE,
    removeNumbers = TRUE,
