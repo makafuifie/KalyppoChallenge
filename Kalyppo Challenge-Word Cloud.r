@@ -11,7 +11,7 @@ setwd("/Users/m/Google Drive/school/Data mining/KalyppoChallenge")
 
 #read data from csv file
 
-kalyppo <- read.csv('#KalyppoChallenge-Facebook.csv', header=TRUE)
+kalyppo <- read.csv('KalyppoChallenge Data.csv', header=TRUE)
 #get column with data
 #text = kalyppo$Title
 
